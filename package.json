@@ -1,0 +1,29 @@
+{
+  "name": "swish",
+  "version": "0.0.1",
+  "description": "Three.js basketball game",
+  "main": "scripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/codenameyau/swish.git"
+  },
+  "keywords": [
+    "threejs",
+  ],
+  "author": "Jorge Yau",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codenameyau/swish/issues"
+  },
+  "homepage": "https://github.com/codenameyau/swish",
+  "devDependencies": {
+    "gulp": "^3.8.1",
+    "gulp-rev": "^0.4.1",
+    "gulp-uglify": "^0.3.1",
+    "gulp-usemin": "^0.3.5",
+    "rimraf": "^2.2.8"
+  }
+}
