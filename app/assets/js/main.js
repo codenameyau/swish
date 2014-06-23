@@ -9,12 +9,12 @@
  *******************/
 
 var CAMERA = {
-  fov : 45,
+  fov : 40,
   near : 1,
-  far : 1000,
+  far : 2000,
   zoomX : 0,
-  zoomY : 20,
-  zoomZ : 50,
+  zoomY : 800,
+  zoomZ : 0,
 };
 
 var CONTROLS = {
@@ -22,14 +22,18 @@ var CONTROLS = {
   userPan : true,
   userPanSpeed : 1,
   minDistance : 10.0,
-  maxDistance : 200.0,
-  maxPolarAngle : (Math.PI/180) * 80,
+  maxDistance : 1100.0,
+  maxPolarAngle : (Math.PI/180) * 90,
 };
 
 var RENDERER = {
   antialias : false,
 };
 
+var PATHS = {
+  texture : 'assets/img/texture/',
+  environment : 'assets/img/environment/',
+};
 
 /********************
  * Global Variables *
@@ -53,19 +57,12 @@ function degToRad(degrees) {
   return Math.PI/180 * degrees;
 }
 
-function basicFloorGrid(lines, steps, gridColor) {
-  lines = lines || 20;
-  steps = steps || 2;
-  gridColor = gridColor || 0xFFFFFF;
-  var floorGrid = new THREE.Geometry();
-  var gridLine = new THREE.LineBasicMaterial( {color: gridColor} );
-  for (var i = -lines; i <= lines; i += steps) {
-    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
-  }
-  return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
+function basicFloor(width, length, material) {
+  width  = width  || 50;
+  length = length || 20;
+  var floorPlane = new THREE.PlaneGeometry(width, length);
+  var floorMesh = new THREE.Mesh(floorPlane, material);
+  return floorMesh;
 }
 
 function basicCrate(size) {
@@ -172,10 +169,15 @@ function initializeScene() {
   scene.add(lightSource);
 
   // Example: basic floor grid
-  scene.add(basicFloorGrid(20, 2));
+  var texturePath = PATHS.environment + 'basketball-court.png';
+  var textureImage = new THREE.ImageUtils.loadTexture( texturePath );
+  var floorMaterial = new THREE.MeshLambertMaterial({ map: textureImage });
+  var floorCourt = basicFloor(1040, 600, floorMaterial);
+  floorCourt.rotation.x = degToRad(-90);
+  scene.add(floorCourt);
 
   // Example: crate with texture
-  var crateSize = 5;
+  var crateSize = 10;
   crate = basicCrate(crateSize);
   crate.position.set(0, crateSize/2, 0);
   scene.add(crate);
