@@ -21,18 +21,20 @@ function GameEngine() {
 
 }
 
-/*****************************
-* GameEngine: Public Methods *
-******************************/
+/******************************
+ * GameEngine: Public Methods *
+ ******************************/
 GameEngine.prototype.update = function() {
 };
 
 
 
-GameEngine.prototype.add = function(object, setCollision, setVelocity) {
-  // Adds object to game engine entities
+GameEngine.prototype.add = function(object, setVelocity, setCollision) {
+  // Check default arguments
+  var velX = this.hasProperty(setVelocity, 'x', 0);
+  var velY = this.hasProperty(setVelocity, 'y', this.gravity);
+  var velZ = this.hasProperty(setVelocity, 'z', 0);
   setCollision = setCollision || 1;
-  setVelocity  = setVelocity  || {x: 0, y: 0, z: 0};
 
   // Create entity with incremental ID
   var objectID = this.entityCount;
@@ -40,15 +42,27 @@ GameEngine.prototype.add = function(object, setCollision, setVelocity) {
 
   // Define entity properties
   this.entities[objectID] = {
-    mesh : object,
-    velocity : new THREE.Vector3(setVelocity.x, setVelocity.y, setVelocity.z),
+    velocity : new THREE.Vector3(velX, velY, velZ),
     collision : setCollision,
+    mesh : object,
   };
 
-  console.log(this.entities);
-
+  // Returns entity id
+  return objectID;
 };
 
+
+/*******************************
+ * GameEngine: Private Methods *
+ *******************************/
+
+// Checks that object has property, otherwise return default value
+GameEngine.prototype.hasProperty = function(object, property, value) {
+  if (object && typeof object[property] !== 'undefined') {
+    value = object[property];
+  }
+  return value;
+};
 
 
 // Export: THREEGEN
@@ -58,4 +72,3 @@ var THREEGEN = {
   GameEngine : GameEngine,
 
 };
-

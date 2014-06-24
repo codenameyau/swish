@@ -185,8 +185,9 @@ function initializeScene() {
   basketball = basicBasketball(ballSize);
   basketball.position.set(0, 100, 0);
   scene.add(basketball);
-  engine.add(basketball);
-
+  var i = engine.add(basketball);
+  console.log(i);
+  console.log(engine.entities[i]);
 }
 
 
