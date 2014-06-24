@@ -14,7 +14,7 @@ var CAMERA = {
   far : 2000,
   zoomX : 0,
   zoomY : 400,
-  zoomZ : 0,
+  zoomZ : -600,
 };
 
 var CONTROLS = {
@@ -189,9 +189,9 @@ function initializeScene() {
   // Add Object: basketball
   var ballSize = 10;
   basketball = basicBasketball(ballSize);
-  basketball.position.set(0, 100, 0);
+  basketball.position.set(0, 300, 0);
   scene.add(basketball);
-  entityIDS.basketballID = engine.add(basketball, 1);
+  entityIDS.basketballID = engine.add(basketball, {collision: 1});
 
 }
 

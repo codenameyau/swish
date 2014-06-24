@@ -26,15 +26,23 @@ function GameEngine() {
  ******************************/
 GameEngine.prototype.update = function() {
 
+  // Update entity positions
+  for (var item in this.entities) {
+    var entity = this.entities[item];
+    if (entity.mesh.position.y > 0) {
+      entity.mesh.position.y += entity.velocity.y;
+    }
+  }
+
 };
 
 
-GameEngine.prototype.add = function(object, setCollision, setVelocity) {
+GameEngine.prototype.add = function(object, options) {
   // Check default arguments
-  setCollision = setCollision || 0;
-  var velX = this.hasProperty(setVelocity, 'x', 0);
-  var velY = this.hasProperty(setVelocity, 'y', this.gravity);
-  var velZ = this.hasProperty(setVelocity, 'z', 0);
+  var setCollision = this.hasProperty(options, 'collision', 0);
+  var velX = this.hasProperty(options, 'velX', 0);
+  var velY = this.hasProperty(options, 'velY', this.gravity);
+  var velZ = this.hasProperty(options, 'velZ', 0);
 
   // Create entity with incremental ID
   var objectID = this.entityCount;
@@ -53,9 +61,8 @@ GameEngine.prototype.add = function(object, setCollision, setVelocity) {
 
 
 GameEngine.prototype.addStatic = function(object) {
-  var setCollision = 0;
-  var setVelocity = {x: 0, y: 0, z: 0};
-  this.add(object, setCollision, setVelocity);
+  var options = {collision: 0, velX: 0, velY: 0, velZ: 0};
+  this.add(object, options);
 };
 
 
