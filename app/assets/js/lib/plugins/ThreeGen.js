@@ -8,31 +8,37 @@ function GameEngine() {
  /**************************
   * GameEngine: Properties *
   **************************/
-  var engine  = {};
-  engine.gravity = -10;
+  this.gravity  = -10;
+  this.entities = {};
 
- /*****************************
-  * GameEngine: Public Methods *
-  *****************************/
+ /*******************************
+  * GameEngine: Private Methods *
+  *******************************/
 
-  // Updates object property
-  engine.update = function() {
-
-  };
-
-  // Adds object to world
-  engine.add = function(object) {
-    console.log(object);
-  };
-
-  return engine;
 }
 
+/*****************************
+* GameEngine: Public Methods *
+******************************/
+GameEngine.prototype.update = function() {
+};
 
+GameEngine.prototype.add = function(object) {
+  var objectID = this.generateID();
+
+};
+
+
+GameEngine.prototype.generateID = function() {
+  // Generates a random base 36 string
+  return Math.random().toString(36).substring(2);
+};
+
+
+// Export: THREEGEN
 var THREEGEN = {
 
-  // Properties
-  gravity : -9.8,
+  // Export: GameEngine
   GameEngine : GameEngine,
 
 };

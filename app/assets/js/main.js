@@ -161,7 +161,6 @@ function initializeScene() {
 
   // ThreeGen game engine
   engine = new THREEGEN.GameEngine();
-
   /***************
    * Custom Code *
    ***************/
