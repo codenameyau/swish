@@ -1,5 +1,5 @@
 /*-------JSHint Directives-------*/
-/* global THREE, Stats, dat      */
+/* global THREE, THREEGEN, Stats */
 /*-------------------------------*/
 'use strict';
 
@@ -48,7 +48,7 @@ var COURT = {
 var scene, camera, renderer;
 
 // Plugins
-var controls, stats, gui;
+var controls, stats, engine;
 
 // Scene objects
 var basketball;
@@ -92,6 +92,7 @@ function renderScene() {
 function updateScene() {
   stats.update();
   controls.update();
+  engine.update();
 }
 
 function animateScene() {
@@ -158,9 +159,8 @@ function initializeScene() {
   stats.domElement.style.zIndex = 100;
   addToDOM(stats.domElement);
 
-  // Dat gui (top right controls)
-  gui = new dat.GUI( {height: 5 * 32 - 1} );
-
+  // ThreeGen game engine
+  engine = new THREEGEN.GameEngine();
 
   /***************
    * Custom Code *
@@ -186,9 +186,7 @@ function initializeScene() {
   basketball = basicBasketball(ballSize);
   basketball.position.set(0, 100, 0);
   scene.add(basketball);
-
-  // Velocity: basketball
-
+  engine.add(basketball);
 
 }
 
@@ -196,6 +194,5 @@ function initializeScene() {
 /**********************
  * Render and Animate *
  **********************/
-
 initializeScene();
 animateScene();
