@@ -13,17 +13,17 @@ var CAMERA = {
   near : 1,
   far : 2000,
   zoomX : 0,
-  zoomY : 800,
+  zoomY : 400,
   zoomZ : 0,
 };
 
 var CONTROLS = {
   enabled : true,
   userPan : true,
-  userPanSpeed : 1,
+  userPanSpeed : 4,
   minDistance : 10.0,
   maxDistance : 1100.0,
-  maxPolarAngle : (Math.PI/180) * 90,
+  maxPolarAngle : (Math.PI/180) * 85,
 };
 
 var RENDERER = {
@@ -33,6 +33,11 @@ var RENDERER = {
 var PATHS = {
   texture : 'assets/img/texture/',
   environment : 'assets/img/environment/',
+};
+
+var COURT = {
+  length : 1040,
+  width : 600,
 };
 
 /********************
@@ -46,7 +51,7 @@ var scene, camera, renderer;
 var controls, stats, gui;
 
 // Scene objects
-var crate;
+var basketball;
 
 
 /********************
@@ -65,10 +70,10 @@ function basicFloor(width, length, material) {
   return floorMesh;
 }
 
-function basicCrate(size) {
+function basicBasketball(size) {
   size = size || 5;
-  var textureImage = 'assets/img/texture/crate-small.jpg';
-  var geometry = new THREE.BoxGeometry( size, size, size );
+  var textureImage = PATHS.texture + 'basketball.png';
+  var geometry = new THREE.SphereGeometry( size, 64, 64 );
   var crateTexture = new THREE.ImageUtils.loadTexture( textureImage );
   var crateMaterial = new THREE.MeshLambertMaterial({ map: crateTexture });
   var crate = new THREE.Mesh( geometry, crateMaterial );
@@ -163,24 +168,27 @@ function initializeScene() {
 
   // Example: light sources
   var lightAmbient = new THREE.AmbientLight(0x666666);
-  var lightSource = new THREE.PointLight(0x888888);
-  lightSource.position.set(0, 50, 80);
+  var lightSource = new THREE.DirectionalLight(0xa2a2a2);
+  lightSource.position.set(0.5, 1, 0);
   scene.add(lightAmbient);
   scene.add(lightSource);
 
-  // Example: basic floor grid
+  // Add Object: floor court
   var texturePath = PATHS.environment + 'basketball-court.png';
   var textureImage = new THREE.ImageUtils.loadTexture( texturePath );
   var floorMaterial = new THREE.MeshLambertMaterial({ map: textureImage });
-  var floorCourt = basicFloor(1040, 600, floorMaterial);
+  var floorCourt = basicFloor(COURT.length, COURT.width, floorMaterial);
   floorCourt.rotation.x = degToRad(-90);
   scene.add(floorCourt);
 
-  // Example: crate with texture
-  var crateSize = 10;
-  crate = basicCrate(crateSize);
-  crate.position.set(0, crateSize/2, 0);
-  scene.add(crate);
+  // Add Object: basketball
+  var ballSize = 10;
+  basketball = basicBasketball(ballSize);
+  basketball.position.set(0, 100, 0);
+  scene.add(basketball);
+
+  // Velocity: basketball
+
 
 }
 
