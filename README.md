@@ -24,13 +24,12 @@ var velocity = {x: 20, y: engine.gravity, z: 0};
 var entityID = engine.add(basketball, avoidCollision, velocity);
 ```
 
-#####
 
 ###Collision
-* 0 -> No collision with any objects
-* 1 -> Collide with everything except for 0 or 1
-* 2 -> Collide with everything except for 0 or 2
-* 3 -> Collide with everything except for 0 or 3
-* ... and so on
-* n -> Collide with everything except for 0 or n
+* -1 -> No collision with any objects
+*  0 -> Environment, doesn't move
+*  1 -> Collide with everything except for 0 or 1
+*  2 -> Collide with everything except for 0 or 2
+*  ... and so on
+*  n -> Collide with everything except for 0 or n
 

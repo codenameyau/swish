@@ -53,6 +53,9 @@ var controls, stats, engine;
 // Scene objects
 var basketball;
 
+// contains entity ids
+var entityIDS = {};
+
 
 /********************
  * Helper Functions *
@@ -161,6 +164,8 @@ function initializeScene() {
 
   // ThreeGen game engine
   engine = new THREEGEN.GameEngine();
+
+
   /***************
    * Custom Code *
    ***************/
@@ -179,15 +184,15 @@ function initializeScene() {
   var floorCourt = basicFloor(COURT.length, COURT.width, floorMaterial);
   floorCourt.rotation.x = degToRad(-90);
   scene.add(floorCourt);
+  entityIDS.floorCourtID = engine.addStatic(floorCourt);
 
   // Add Object: basketball
   var ballSize = 10;
   basketball = basicBasketball(ballSize);
   basketball.position.set(0, 100, 0);
   scene.add(basketball);
-  var i = engine.add(basketball);
-  console.log(i);
-  console.log(engine.entities[i]);
+  entityIDS.basketballID = engine.add(basketball, 1);
+
 }
 
 

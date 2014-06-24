@@ -25,16 +25,16 @@ function GameEngine() {
  * GameEngine: Public Methods *
  ******************************/
 GameEngine.prototype.update = function() {
+
 };
 
 
-
-GameEngine.prototype.add = function(object, setVelocity, setCollision) {
+GameEngine.prototype.add = function(object, setCollision, setVelocity) {
   // Check default arguments
+  setCollision = setCollision || 0;
   var velX = this.hasProperty(setVelocity, 'x', 0);
   var velY = this.hasProperty(setVelocity, 'y', this.gravity);
   var velZ = this.hasProperty(setVelocity, 'z', 0);
-  setCollision = setCollision || 1;
 
   // Create entity with incremental ID
   var objectID = this.entityCount;
@@ -49,6 +49,13 @@ GameEngine.prototype.add = function(object, setVelocity, setCollision) {
 
   // Returns entity id
   return objectID;
+};
+
+
+GameEngine.prototype.addStatic = function(object) {
+  var setCollision = 0;
+  var setVelocity = {x: 0, y: 0, z: 0};
+  this.add(object, setCollision, setVelocity);
 };
 
 
