@@ -1,6 +1,6 @@
-/*-------JSHint Directives--------------*/
-/* global THREE, THREEx, Stats, Physijs */
-/*--------------------------------------*/
+/*-------JSHint Directives---------------*/
+/* global THREE, THREEx, Stats, THREEGEN */
+/*---------------------------------------*/
 'use strict';
 
 /*******************
@@ -47,7 +47,7 @@ var COURT = {
 var scene, camera, renderer;
 
 // Plugins
-var controls, stats;
+var controls, stats, engine;
 
 // Scene objects
 var basketball;
@@ -91,6 +91,7 @@ function renderScene() {
 function updateScene() {
   stats.update();
   controls.update();
+  engine.update();
 }
 
 function animateScene() {
@@ -144,10 +145,6 @@ function initializeScene() {
    * Initialize Plugins *
    **********************/
 
-  // Physijs engine
-  Physijs.scripts.worker = '/lib/physi/physijs_worker.js';
-  Physijs.scripts.ammo = '/lib/physi/ammo.js';
-
   // OrbitControls using mouse
   controls = new THREE.OrbitControls(camera);
   for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
@@ -161,6 +158,8 @@ function initializeScene() {
   stats.domElement.style.zIndex = 100;
   addToDOM(stats.domElement);
 
+  // ThreeGen game engine
+  engine = new THREEGEN.GameEngine(scene);
 
   /***************
    * Custom Code *
@@ -170,8 +169,8 @@ function initializeScene() {
   var lightAmbient = new THREE.AmbientLight(0x666666);
   var lightSource = new THREE.DirectionalLight(0xa2a2a2);
   lightSource.position.set(0.5, 1, 0);
-  scene.add(lightAmbient);
-  scene.add(lightSource);
+  engine.include(lightAmbient);
+  engine.include(lightSource);
 
   // Add Object: floor court
   var texturePath = PATHS.environment + 'basketball-court.png';
@@ -179,13 +178,13 @@ function initializeScene() {
   var floorMaterial = new THREE.MeshLambertMaterial({ map: textureImage });
   var floorCourt = basicFloor(COURT.length, COURT.width, floorMaterial);
   floorCourt.rotation.x = degToRad(-90);
-  scene.add(floorCourt);
+  engine.include(floorCourt);
 
   // Add Object: basketball
   var ballSize = 10;
   basketball = basicBasketball(ballSize);
-  basketball.position.set(0, 300, 0);
-  scene.add(basketball);
+  basketball.position.set(0, 100, 0);
+  engine.add(basketball);
 }
 
 

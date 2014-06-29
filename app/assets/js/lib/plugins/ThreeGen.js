@@ -6,7 +6,7 @@
 
 
 // Function Constructor
-function GameEngine() {
+function GameEngine(scene) {
 
  /**************************
   * GameEngine: Properties *
@@ -14,6 +14,7 @@ function GameEngine() {
   this.entities = {};
   this.gravity  = -10;
   this.entityCount = 0;
+  this.scene = scene;
 
  /*******************************
   * GameEngine: Private Methods *
@@ -41,9 +42,10 @@ GameEngine.prototype.update = function() {
 };
 
 
+// Add an object that interacts with world
 GameEngine.prototype.add = function(object, options) {
   // Check default arguments
-  var setCollision = this.hasProperty(options, 'collision', 0);
+  var setCollision = this.hasProperty(options, 'collision', 1);
   var velX = this.hasProperty(options, 'velX', 0);
   var velY = this.hasProperty(options, 'velY', this.gravity);
   var velZ = this.hasProperty(options, 'velZ', 0);
@@ -60,11 +62,13 @@ GameEngine.prototype.add = function(object, options) {
   };
 
   // Returns entity id
+  this.scene.add(object);
   return objectID;
 };
 
 
-GameEngine.prototype.addStatic = function(object) {
+// Include an object which does not interact with world
+GameEngine.prototype.include = function(object) {
   var options = {collision: 0, velX: 0, velY: 0, velZ: 0};
   this.add(object, options);
 };
