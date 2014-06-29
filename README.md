@@ -19,7 +19,7 @@ var entityID = engine.add(basketball);
 Add entity with different collision and velocity
 ```javascript
 var basketball = THREE.Mesh(geometry, material);
-var options = {collision: 1, velX: 20, velY: 0};
+var options = {collision: 1, vX: 20, vY: 0};
 var entityID = engine.add(basketball, options);
 ```
 

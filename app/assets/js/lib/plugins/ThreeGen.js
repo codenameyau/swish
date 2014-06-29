@@ -40,19 +40,23 @@ GameEngine.prototype.update = function() {
     // Update positions of movable objects
     if (entity.collision > 0) {
 
-      // Object is falling
+      // Object is falling -> update position
       if (entity.mesh.position.y > 0) {
-        entity.mesh.position.y += entity.velocity.y;
         entity.mesh.position.x += entity.velocity.x;
+        entity.mesh.position.y += entity.velocity.y;
+        entity.mesh.position.z += entity.velocity.z;
       }
 
-      // Object hits ground -> bounce
+      // Object hits ground -> delete
       else {
-        entity.velocity.y = Math.abs(entity.velocity.y)/2;
+        this.destroy(item);
+        continue;
       }
 
       // Increase acceleration
+      entity.velocity.x += entity.acceleration.x * delta;
       entity.velocity.y += entity.acceleration.y * delta;
+      entity.velocity.z += entity.acceleration.z * delta;
 
     }
   }
@@ -99,6 +103,13 @@ GameEngine.prototype.include = function(object) {
   this.add(object, options);
 };
 
+
+// Destroy entity from world
+GameEngine.prototype.destroy = function(objectID) {
+  var entity = this.entities[objectID];
+  this.scene.remove(entity.mesh);
+  delete this.entities[objectID];
+};
 
 /*******************************
  * GameEngine: Private Methods *
