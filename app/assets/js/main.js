@@ -183,8 +183,8 @@ function initializeScene() {
   // Add Object: basketball
   var ballSize = 10;
   basketball = basicBasketball(ballSize);
-  basketball.position.set(0, 100, 0);
-  engine.add(basketball);
+  basketball.position.set(0, 200, 0);
+  engine.add(basketball, {vX: 10.8});
 }
 
 

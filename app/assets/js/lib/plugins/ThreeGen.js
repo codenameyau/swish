@@ -4,6 +4,8 @@
 /*-------------------------------*/
 'use strict';
 
+// Global variables
+var delta;
 
 // Function Constructor
 function GameEngine(scene) {
@@ -15,6 +17,7 @@ function GameEngine(scene) {
   this.gravity  = -10;
   this.entityCount = 0;
   this.scene = scene;
+  this.clock = new THREE.Clock();
 
  /*******************************
   * GameEngine: Private Methods *
@@ -27,15 +30,30 @@ function GameEngine(scene) {
  ******************************/
 GameEngine.prototype.update = function() {
 
+  // Clock delta
+  delta = this.clock.getDelta();
+
   // Update entity positions
   for (var item in this.entities) {
     var entity = this.entities[item];
 
-    // Update positions of objects with collision > 0
+    // Update positions of movable objects
     if (entity.collision > 0) {
+
+      // Object is falling
       if (entity.mesh.position.y > 0) {
         entity.mesh.position.y += entity.velocity.y;
+        entity.mesh.position.x += entity.velocity.x;
       }
+
+      // Object hits ground -> bounce
+      else {
+        entity.velocity.y = Math.abs(entity.velocity.y)/2;
+      }
+
+      // Increase acceleration
+      entity.velocity.y += entity.acceleration.y * delta;
+
     }
   }
 
@@ -46,9 +64,16 @@ GameEngine.prototype.update = function() {
 GameEngine.prototype.add = function(object, options) {
   // Check default arguments
   var setCollision = this.hasProperty(options, 'collision', 1);
-  var velX = this.hasProperty(options, 'velX', 0);
-  var velY = this.hasProperty(options, 'velY', this.gravity);
-  var velZ = this.hasProperty(options, 'velZ', 0);
+
+  // Default velocity (x,y,z)
+  var vX = this.hasProperty(options, 'vX', 0);
+  var vY = this.hasProperty(options, 'vY', 0);
+  var vZ = this.hasProperty(options, 'vZ', 0);
+
+  // Default acceleration (x,y,z)
+  var aX = this.hasProperty(options, 'aX', 0);
+  var aY = this.hasProperty(options, 'aY', this.gravity);
+  var aZ = this.hasProperty(options, 'aZ', 0);
 
   // Create entity with incremental ID
   var objectID = this.entityCount;
@@ -56,7 +81,8 @@ GameEngine.prototype.add = function(object, options) {
 
   // Define entity properties
   this.entities[objectID] = {
-    velocity : new THREE.Vector3(velX, velY, velZ),
+    velocity : new THREE.Vector3(vX, vY, vZ),
+    acceleration : new THREE.Vector3(aX, aY, aZ),
     collision : setCollision,
     mesh : object,
   };
@@ -69,7 +95,7 @@ GameEngine.prototype.add = function(object, options) {
 
 // Include an object which does not interact with world
 GameEngine.prototype.include = function(object) {
-  var options = {collision: 0, velX: 0, velY: 0, velZ: 0};
+  var options = {collision: 0, vX: 0, vY: 0, vZ: 0, aX: 0, aY: 0, aZ: 0};
   this.add(object, options);
 };
 
