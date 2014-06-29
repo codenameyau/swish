@@ -68,6 +68,8 @@ GameEngine.prototype.update = function() {
 GameEngine.prototype.add = function(object, options) {
   // Check default arguments
   var setCollision = this.hasProperty(options, 'collision', 1);
+  var maxBounce = this.hasProperty(options, 'maxBounce', 5);
+  var bounciness = this.hasProperty(options, 'bounciness', 0);
 
   // Default velocity (x,y,z)
   var vX = this.hasProperty(options, 'vX', 0);
@@ -88,6 +90,9 @@ GameEngine.prototype.add = function(object, options) {
     velocity : new THREE.Vector3(vX, vY, vZ),
     acceleration : new THREE.Vector3(aX, aY, aZ),
     collision : setCollision,
+    maxBounce : maxBounce,
+    bounciness : bounciness,
+    bounces : 0,
     mesh : object,
   };
 
@@ -99,7 +104,16 @@ GameEngine.prototype.add = function(object, options) {
 
 // Include an object which does not interact with world
 GameEngine.prototype.include = function(object) {
-  var options = {collision: 0, vX: 0, vY: 0, vZ: 0, aX: 0, aY: 0, aZ: 0};
+  var options = {
+    collision: 0,
+    bounciness: 0,
+    vX: 0,
+    vY: 0,
+    vZ: 0,
+    aX: 0,
+    aY: 0,
+    aZ: 0
+  };
   this.add(object, options);
 };
 

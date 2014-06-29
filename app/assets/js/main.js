@@ -181,10 +181,10 @@ function initializeScene() {
   engine.include(floorCourt);
 
   // Add Object: basketball
-  var ballSize = 10;
+  var ballSize = 8;
   basketball = basicBasketball(ballSize);
-  basketball.position.set(0, 200, 0);
-  engine.add(basketball, {vX: 10.8});
+  basketball.position.set(-400, 20, 0);
+  engine.add(basketball, {vX: 10.8, vY: 8, bounciness: 0.8});
 }
 
 

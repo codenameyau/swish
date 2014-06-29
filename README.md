@@ -3,6 +3,9 @@ swish
 
 Three.js basketball game
 
+##Progress
+Development progress has stopped for now. More to come in upcomming years.
+
 
 ##ThreeGen Game Engine Documentation
 
