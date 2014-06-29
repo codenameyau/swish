@@ -29,8 +29,12 @@ GameEngine.prototype.update = function() {
   // Update entity positions
   for (var item in this.entities) {
     var entity = this.entities[item];
-    if (entity.mesh.position.y > 0) {
-      entity.mesh.position.y += entity.velocity.y;
+
+    // Update positions of objects with collision > 0
+    if (entity.collision > 0) {
+      if (entity.mesh.position.y > 0) {
+        entity.mesh.position.y += entity.velocity.y;
+      }
     }
   }
 

@@ -1,8 +1,7 @@
-/*-------JSHint Directives-------*/
-/* global THREE, THREEGEN, Stats */
-/*-------------------------------*/
+/*-------JSHint Directives--------------*/
+/* global THREE, THREEx, Stats, Physijs */
+/*--------------------------------------*/
 'use strict';
-
 
 /*******************
  * Manage Settings *
@@ -48,13 +47,10 @@ var COURT = {
 var scene, camera, renderer;
 
 // Plugins
-var controls, stats, engine;
+var controls, stats;
 
 // Scene objects
 var basketball;
-
-// contains entity ids
-var entityIDS = {};
 
 
 /********************
@@ -95,7 +91,6 @@ function renderScene() {
 function updateScene() {
   stats.update();
   controls.update();
-  engine.update();
 }
 
 function animateScene() {
@@ -149,6 +144,10 @@ function initializeScene() {
    * Initialize Plugins *
    **********************/
 
+  // Physijs engine
+  Physijs.scripts.worker = '/lib/physi/physijs_worker.js';
+  Physijs.scripts.ammo = '/lib/physi/ammo.js';
+
   // OrbitControls using mouse
   controls = new THREE.OrbitControls(camera);
   for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
@@ -161,9 +160,6 @@ function initializeScene() {
   stats.domElement.style.bottom = '0px';
   stats.domElement.style.zIndex = 100;
   addToDOM(stats.domElement);
-
-  // ThreeGen game engine
-  engine = new THREEGEN.GameEngine();
 
 
   /***************
@@ -184,15 +180,12 @@ function initializeScene() {
   var floorCourt = basicFloor(COURT.length, COURT.width, floorMaterial);
   floorCourt.rotation.x = degToRad(-90);
   scene.add(floorCourt);
-  entityIDS.floorCourtID = engine.addStatic(floorCourt);
 
   // Add Object: basketball
   var ballSize = 10;
   basketball = basicBasketball(ballSize);
   basketball.position.set(0, 300, 0);
   scene.add(basketball);
-  entityIDS.basketballID = engine.add(basketball, {collision: 1});
-
 }
 
 
